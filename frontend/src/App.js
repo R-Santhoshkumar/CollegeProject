@@ -1,4 +1,4 @@
-import React from "react"; // Import React
+import React, { useState } from "react"; // Import React
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -16,11 +16,12 @@ import Register from "./pages/Register";
 import StudGridView from "./pages/Student/StudGridView";
 import StudGridSyllabusView from "./pages/Student/StudGridSyllabusView";
 
+//Json File
 
 // Faculty Link and Imports
 
 
-//import FacultyRegister from "./pages/Faculty/FacultyRegister";
+
 import FacHome from "./pages/Faculty/FacHome";
 import FacProfile from "./pages/Faculty/FacProfile";
 //import FacAnalysis from "./pages/Faculty/FacAnalysis";
@@ -61,12 +62,44 @@ import ViewResult from "./pages/Student/StudViewResultPage";
 
 
 
-
+import StudentNavBar from "./components/StudentNavBar";
+import FacultyNavBar from "./components/FacultyNavBar";
+import AdminNavBar from "./components/AdminNavBar";
 function App() {
+  const [role, setRole] = useState(null);
 
-  // renderRoutes(){
-  // return jsonArry.map(route => <Route index path={{ route.path }} element={<ProtectedRoute> lazy={() => import(route.component)}</ProtectedRoute>} />)
-  // }
+  useEffect(() => {
+    async function fetchUserInfo() {
+      try {
+        const response = await axios.get("http://localhost:5000/api/auth/userinfo", { withCredentials: true });
+        if (response.data.role) {
+          setRole(response.data.role);
+        }
+      } catch (error) {
+        console.error("Error fetching user info", error);
+      }
+    }
+    fetchUserInfo();
+  }, []);
+
+  function roleSwitch(role) {
+    
+    switch (role) {
+      case "Student":
+        
+        return renderRoutes(StudentNavBar);
+      case "Faculty":
+        return renderRoutes(FacultyNavBar);
+      case "Admin":
+        return renderRoutes(AdminNavBar);
+      default:
+        return [];
+    }
+  }
+
+  function renderRoutes(jsonfile){
+  return jsonfile.map(route => <Route index path={ route.path } element={<ProtectedRoute> lazy={() => import(route.component)}</ProtectedRoute>} />)
+  }
 
   return (
     <Router>
@@ -75,9 +108,9 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/Register" element={<Register />} />
 
-        {/* <Route path='/' >
-        {{renderRoutes()}}
-        </Route> */}
+        <Route path='/' >
+        {roleSwitch(setRole)}
+        </Route>
         <Route path="/" element={<ProtectedRoute><StudentLayout /></ProtectedRoute>}>
           <Route index path="/StudHome" element={<ProtectedRoute><StudHome /></ProtectedRoute>} />
           <Route path="/StudProfile" element={<ProtectedRoute><StudProfile /></ProtectedRoute>} />

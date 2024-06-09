@@ -65,7 +65,7 @@ async function AdminLogin(email,password,req,res) {
   if (!passMatch)
     return res.status(400).send({ message: "Password is incorrect" });
 
-  token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+  token = jwt.sign({ email,role }, jwtsec, { expiresIn: 600 * 600 });
 
   // res.cookie("sessionId", token, { secure: true });
   res.cookie("token", token, { httpOnly: true, secure: true });
@@ -147,6 +147,22 @@ async function LoginHandler(req, res) {
       break;
   }
 }
+
+//Storing User information
+function UserINFO(req, res) {
+  const token = req.cookies.sessionId;
+  if (!token) {
+    return res.status(401).send({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, jwtsec);
+    return res.status(200).send({ email: decoded.email, role: decoded.role });
+  } catch (error) {
+    return res.status(401).send({ message: "Unauthorized" });
+  }
+};
+
 
 //Student Registration details
 
@@ -260,3 +276,4 @@ module.exports.LoginHandler = LoginHandler;
 module.exports.forgotPasswordHandler = forgotPasswordHandler;
 module.exports.logoutHandler = logoutHandler;
 module.exports.StudentRegistrationHandler = StudentRegistrationHandler;
+module.exports.UserINFO = UserINFO;
