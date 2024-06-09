@@ -112,10 +112,6 @@ const MSc_DS_student_info = sequelize.define("msc_ds_student_details", {
 });
 
 
-/*************************************** */
-//$2a$10$Nm/ou317e0n2j2urCeVZ2u7lOxb8Qu6q1/9Ldzi79we3rjgg0AQai
-
-/********************************* */
 
 
 
