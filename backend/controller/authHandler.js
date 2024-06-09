@@ -8,7 +8,7 @@ const {
 } = require("../models/PersonalInfo");
 const {
   Student_Registration,
-  Faculty_Registration
+  Faculty_Registration,
 } = require("../models/Registration");
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../models/index");
@@ -19,47 +19,10 @@ var jwt = require("jsonwebtoken");
 let jwtsec = "dflkjnhiuhtiunnbithuynbidhiunstiuhynnshiuyrb";
 var salt = bcrypt.genSaltSync(10);
 
-//Student Login Handler
 
-async function StudentLoginHandler(req, res) {
-  let { email, password } = req.body;
+//Faculty Login Search Function
+async function FacultyLogin(email,password) {
   let isAvailable;
-
-  isAvailable = await Student_Registration.findOne({
-    where: { email: email },
-  });
-
-  if (!isAvailable) {
-    return res.status(400).send({ message: "User not Found" });
-  }
-
-  let passMatch = bcrypt.compareSync(password, isAvailable.password);
-
-  if (!passMatch)
-    return res.status(400).send({ message: "Password is incorrect" });
-
-  const UserData = { email: email };
-  let token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
-  
-
-  res.cookie("sessionId", token, { secure: true });
-
-  await Session.create({
-    // Optional session creation (not using JWT in session)
-    userId: isAvailable.user_id,
-    jwt: token,
-    status: "valid",
-  });
-
-  return res.status(200).send({ success: true, token: token });
-}
-
-//Faculty Login Handler
-
-async function FacultyLoginHandler(req, res) {
-  let { email, password } = req.body;
-  let isAvailable;
-
   isAvailable = await Faculty_Registration.findOne({
     where: { email: email },
   });
@@ -73,8 +36,8 @@ async function FacultyLoginHandler(req, res) {
   if (!passMatch)
     return res.status(400).send({ message: "Password is incorrect" });
 
-  let token = jwt.sign({ email }, jwtsec, { expiresIn: 600*600});
-  
+  token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+
   res.cookie("sessionId", token, { secure: true });
   //res.cookie("token", token, { httpOnly: true, secure: true });
 
@@ -88,13 +51,10 @@ async function FacultyLoginHandler(req, res) {
   return res.status(200).send({ success: true, token: token });
 }
 
-//Admin Login Handler
-
-async function AdminLoginHandler(req, res) {
-  let { email, password } = req.body;
+//Admin Login Search Function
+async function AdminLogin(email,password) {
   let isAvailable;
-
-  isAvailable = await Admin_info.findOne({
+  isAvailable = await Faculty_Registration.findOne({
     where: { email: email },
   });
 
@@ -107,20 +67,73 @@ async function AdminLoginHandler(req, res) {
   if (!passMatch)
     return res.status(400).send({ message: "Password is incorrect" });
 
-  const UserData = { email: email };
+  token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
 
-  let token = jwt.sign({ email }, jwtsec, { expiresIn: 600*600});
-  
   res.cookie("sessionId", token, { secure: true });
+  //res.cookie("token", token, { httpOnly: true, secure: true });
 
   await Session.create({
     userId: isAvailable.user_id,
     jwt: token,
     status: "valid",
   });
+  console.log("Login Successful !");
 
   return res.status(200).send({ success: true, token: token });
 }
+
+//Student Login search Function
+async function StudentLogin(email,password) {
+  let isAvailable;
+  isAvailable = await Faculty_Registration.findOne({
+    where: { email: email },
+  });
+
+  if (!isAvailable) {
+    return res.status(400).send({ message: "User not Found" });
+  }
+
+  let passMatch = bcrypt.compareSync(password, isAvailable.password);
+
+  if (!passMatch)
+    return res.status(400).send({ message: "Password is incorrect" });
+
+  token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+
+  res.cookie("sessionId", token, { secure: true });
+  //res.cookie("token", token, { httpOnly: true, secure: true });
+
+  await Session.create({
+    userId: isAvailable.user_id,
+    jwt: token,
+    status: "valid",
+  });
+  console.log("Login Successful !");
+
+  return res.status(200).send({ success: true, token: token });
+}
+
+async function LoginHandler(req, res) {
+  let { email, password, role } = req.body;
+  switch (role) {
+    case "student":
+      StudentLogin(email,password);
+      break;
+
+    case "faculty":
+      FacultyLogin(email,password);
+      break;
+
+    case "admin":
+      AdminLogin(email,password);
+      break;
+
+    default:
+      res.send("User email is not found!")
+      break;
+  }
+}
+
 
 //Student Sign up Handler
 
@@ -173,7 +186,9 @@ async function FacultySignupHandler(req, res) {
     name: name,
   });
 
-  return res.status(200).send({ message: "User created successfully",success:true });
+  return res
+    .status(200)
+    .send({ message: "User created successfully", success: true });
 }
 
 //Student Registration details
@@ -231,32 +246,32 @@ async function StudentRegistrationDetails(req, res) {
     }
 
     await StudentModel.create({
-      name:name,
-      DOB:DOB,
-      gender:gender,
-      address:address,
-      father_name:father_name,
-      mother_name:mother_name,
-      gaurdian_name:gaurdian_name,
-      father_occupation:father_occupation,
-      mobile_number:mobile_number,
-      parents_mob_no:parents_mob_no,
-      blood_group:blood_group,
-      email:email,
-      religion:religion,
-      caste:caste,
-      nationality:nationality,
-      register_number:register_number,
-      programme:programme,
-      year:year,
-      batch:batch,
-      semester:semester,
+      name: name,
+      DOB: DOB,
+      gender: gender,
+      address: address,
+      father_name: father_name,
+      mother_name: mother_name,
+      gaurdian_name: gaurdian_name,
+      father_occupation: father_occupation,
+      mobile_number: mobile_number,
+      parents_mob_no: parents_mob_no,
+      blood_group: blood_group,
+      email: email,
+      religion: religion,
+      caste: caste,
+      nationality: nationality,
+      register_number: register_number,
+      programme: programme,
+      year: year,
+      batch: batch,
+      semester: semester,
     });
 
-    return res.status(200).send({ message: "User created successfully", success: true });
-  } catch (error) {
-    
-  }
+    return res
+      .status(200)
+      .send({ message: "User created successfully", success: true });
+  } catch (error) {}
 }
 
 // Forget Password Route
@@ -269,9 +284,8 @@ function forgotPasswordHandler(req, res) {
 
 async function logoutHandler(req, res) {
   try {
-   
     res.clearCookie("token");
-    
+
     console.log("Logout Successful ! ");
     return res
       .status(200)
@@ -286,11 +300,9 @@ async function logoutHandler(req, res) {
 
 module.exports.StudentSignupHandler = StudentSignupHandler;
 module.exports.FacultySignupHandler = FacultySignupHandler;
-module.exports.FacultyLoginHandler = FacultyLoginHandler;
-module.exports.StudentLoginHandler = StudentLoginHandler;
-module.exports.AdminLoginHandler = AdminLoginHandler;
+
+module.exports.LoginHandler = LoginHandler;
+
 module.exports.forgotPasswordHandler = forgotPasswordHandler;
 module.exports.logoutHandler = logoutHandler;
 module.exports.StudentRegistrationDetails = StudentRegistrationDetails;
-
-

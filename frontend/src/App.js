@@ -4,8 +4,7 @@ import MainPage from "./pages/MainPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Student Link and Imports
-import StudentLogin from "./pages/Student/StudentLogin";
-import StudentRegister from "./pages/Student/StudentRegister";
+import Login from "./pages/Login";
 import StudHome from "./pages/Student/StudHome";
 import StudProfile from "./pages/Student/StudProfile";
 import StudServices from "./pages/Student/StudServices";
@@ -66,17 +65,19 @@ import ViewResult from "./pages/Student/StudViewResultPage";
 
 
 function App() {
+
   // renderRoutes(){
   // return jsonArry.map(route => <Route index path={{ route.path }} element={<ProtectedRoute> lazy={() => import(route.component)}</ProtectedRoute>} />)
   // }
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/StudentLogin" element={<StudentLogin />} />
-        <Route path="/StudentRegister" element={<StudentRegister />} />
-        <Route path="/FacultyLogin" element={<FacultyLogin />} />
-        <Route path="/AdminLogin" element={<AdminLogin />} />
+        {/* <Route path="/" element={<MainPage />} /> */}
+        <Route path="/" element={<Login />} />
+        <Route path="/Register" element={<StudDetails />} />
+        {/* <Route path="/FacultyLogin" element={<FacultyLogin />} />
+        <Route path="/AdminLogin" element={<AdminLogin />} /> */}
         <Route path="/StudDetails" element={<StudDetails />} />
 
 

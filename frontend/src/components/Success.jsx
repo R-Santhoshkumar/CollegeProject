@@ -7,7 +7,7 @@ const Success = () => {
   useEffect(() => {
     // Redirect to the student login page after 3 seconds
     const timer = setTimeout(() => {
-      navigate("/StudentLogin");
+      navigate("/");
     }, 3000);
 
     // Cleanup the timer
@@ -15,7 +15,7 @@ const Success = () => {
   }, [navigate]);
 
   return (
-    <div className=" flex flex-1 min-w-[500px] justify-center items-center pb-5">
+    <div className=" flex flex-1 flex-col min-w-[500px] justify-center items-center pb-5">
       <label className="text-[27px] font-semibold text-black">Thank You!</label>
       <br/>
       <p className="text-[24px] font-semibold text-black">

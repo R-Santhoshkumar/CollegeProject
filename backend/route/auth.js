@@ -2,7 +2,7 @@ const express = require("express");
 const {
   logoutHandler,
   forgotPasswordHandler,
-  StudentLoginHandler,
+  LoginHandler,
   FacultyLoginHandler,
   StudentSignupHandler,
   FacultySignupHandler,
@@ -14,9 +14,7 @@ const { checkLogin } = require("../common");
 let route = express.Router();
 
 //Login routes for all students
-route.post("/student_login", StudentLoginHandler);
-route.post("/faculty_login", FacultyLoginHandler);
-route.post("/admin_login", AdminLoginHandler);
+route.post("/login", LoginHandler);
 
 //Sign up routes for all students
 route.post("/student_signup", StudentSignupHandler);

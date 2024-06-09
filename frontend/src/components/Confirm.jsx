@@ -38,6 +38,10 @@ const Confirm = ({ nextStep, prevStep, values }) => {
               <td className=" border border-black p-2">{values.confirmPassword}</td>
             </tr>
             <tr>
+              <td className=" font-semibold border border-black p-2">Role :</td>
+              <td className=" border border-black p-2">{values.role}</td>
+            </tr>
+            <tr>
               <th
                 colSpan="2"
                 className="font-bold text-lg border border-black p-2 bg-gray-200"
