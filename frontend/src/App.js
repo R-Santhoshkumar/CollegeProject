@@ -62,44 +62,44 @@ import ViewResult from "./pages/Student/StudViewResultPage";
 
 
 
-import StudentNavBar from "./components/StudentNavBar";
-import FacultyNavBar from "./components/FacultyNavBar";
-import AdminNavBar from "./components/AdminNavBar";
+// import StudentNavBar from "./components/StudentNavBar";
+// import FacultyNavBar from "./components/FacultyNavBar";
+// import AdminNavBar from "./components/AdminNavBar";
 function App() {
-  const [role, setRole] = useState(null);
+  // const [role, setRole] = useState(null);
 
-  useEffect(() => {
-    async function fetchUserInfo() {
-      try {
-        const response = await axios.get("http://localhost:5000/api/auth/userinfo", { withCredentials: true });
-        if (response.data.role) {
-          setRole(response.data.role);
-        }
-      } catch (error) {
-        console.error("Error fetching user info", error);
-      }
-    }
-    fetchUserInfo();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchUserInfo() {
+  //     try {
+  //       const response = await axios.get("http://localhost:5000/api/auth/userinfo", { withCredentials: true });
+  //       if (response.data.role) {
+  //         setRole(response.data.role);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user info", error);
+  //     }
+  //   }
+  //   fetchUserInfo();
+  // }, []);
 
-  function roleSwitch(role) {
+  // function roleSwitch(role) {
     
-    switch (role) {
-      case "Student":
+  //   switch (role) {
+  //     case "Student":
         
-        return renderRoutes(StudentNavBar);
-      case "Faculty":
-        return renderRoutes(FacultyNavBar);
-      case "Admin":
-        return renderRoutes(AdminNavBar);
-      default:
-        return [];
-    }
-  }
+  //       return renderRoutes(StudentNavBar);
+  //     case "Faculty":
+  //       return renderRoutes(FacultyNavBar);
+  //     case "Admin":
+  //       return renderRoutes(AdminNavBar);
+  //     default:
+  //       return [];
+  //   }
+  // }
 
-  function renderRoutes(jsonfile){
-  return jsonfile.map(route => <Route index path={ route.path } element={<ProtectedRoute> lazy={() => import(route.component)}</ProtectedRoute>} />)
-  }
+  // function renderRoutes(jsonfile){
+  // return jsonfile.map(route => <Route index path={ route.path } element={<ProtectedRoute> lazy={() => import(route.component)}</ProtectedRoute>} />)
+  // }
 
   return (
     <Router>
@@ -108,9 +108,9 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/Register" element={<Register />} />
 
-        <Route path='/' >
+        {/* <Route path='/' >
         {roleSwitch(setRole)}
-        </Route>
+        </Route> */}
         <Route path="/" element={<ProtectedRoute><StudentLayout /></ProtectedRoute>}>
           <Route index path="/StudHome" element={<ProtectedRoute><StudHome /></ProtectedRoute>} />
           <Route path="/StudProfile" element={<ProtectedRoute><StudProfile /></ProtectedRoute>} />
