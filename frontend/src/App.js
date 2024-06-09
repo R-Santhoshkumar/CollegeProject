@@ -1,6 +1,5 @@
 import React from "react"; // Import React
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
-import MainPage from "./pages/MainPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Student Link and Imports
@@ -13,14 +12,14 @@ import StudAbout from "./pages/Student/StudAbout";
 import StudAnalysis from "./pages/Student/StudAnalysis";
 import StudentLayout from "./pages/Student/StudentLayout";
 import StudResult from "./pages/Student/StudResult";
-import StudDetails from "./pages/Student/StudDetails";
+import Register from "./pages/Register";
 import StudGridView from "./pages/Student/StudGridView";
 import StudGridSyllabusView from "./pages/Student/StudGridSyllabusView";
 
 
 // Faculty Link and Imports
 
-import FacultyLogin from "./pages/Faculty/FacultyLogin";
+
 //import FacultyRegister from "./pages/Faculty/FacultyRegister";
 import FacHome from "./pages/Faculty/FacHome";
 import FacProfile from "./pages/Faculty/FacProfile";
@@ -48,7 +47,6 @@ import AdmAnalysis from "./pages/Admin/AdmAnalysis";
 import AdmProfile from "./pages/Admin/AdmProfile";
 import AdmHelp from "./pages/Admin/AdmHelp";
 import AdmAbout from "./pages/Admin/AdmAbout";
-import AdminLogin from "./pages/Admin/AdminLogin";
 import AdmUpdateResult from "./pages/Admin/AdmUpdateResult";
 import AdmUpdateResultView from "./pages/Admin/AdmUpdateResultView";
 import AdmUploadRegulation from "./pages/Admin/AdmUploadRegulation";
@@ -73,13 +71,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* <Route path="/" element={<MainPage />} /> */}
+        
         <Route path="/" element={<Login />} />
-        <Route path="/Register" element={<StudDetails />} />
-        {/* <Route path="/FacultyLogin" element={<FacultyLogin />} />
-        <Route path="/AdminLogin" element={<AdminLogin />} /> */}
-        <Route path="/StudDetails" element={<StudDetails />} />
-
+        <Route path="/Register" element={<Register />} />
 
         {/* <Route path='/' >
         {{renderRoutes()}}

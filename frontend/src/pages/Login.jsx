@@ -134,9 +134,9 @@ function LoginPage() {
                 required
               >
                 <option value="">Select Role</option>
-                <option value="student">Student</option>
-                <option value="faculty">Faculty</option>
-                <option value="admin">Admin</option>
+                <option value="Student">Student</option>
+                <option value="Faculty">Faculty</option>
+                <option value="Admin">Admin</option>
               </select>
             </div>
 
@@ -157,7 +157,7 @@ function LoginPage() {
               <label className="text-black">
                 Not a Member?
                 <NavLink
-                  to="/StudDetails"
+                  to="/Register"
                   className=" hover:text-lg hover:cursor-pointer pl-2 transition ease-in-out duration-500"
                 >
                   Register Now

@@ -19,7 +19,7 @@ const Success = () => {
       <label className="text-[27px] font-semibold text-black">Thank You!</label>
       <br/>
       <p className="text-[24px] font-semibold text-black">
-        Your submission has been received.
+        Your submission has been received. Registered Successfully.
       </p>
     </div>
   );

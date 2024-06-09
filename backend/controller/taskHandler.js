@@ -6,7 +6,7 @@ const {
   MSc_AI_student_info,
   Faculty_info,
   Admin_info,
-} = require("../models/PersonalInfo");
+} = require("../models/RegisterDetails");
 let jwtsec = "dflkjnhiuhtiunnbithuynbidhiunstiuhynnshiuyrb";
 const jwt = require("jsonwebtoken"); // Import the jwt library
 const { Sequelize, DataTypes } = require("sequelize");

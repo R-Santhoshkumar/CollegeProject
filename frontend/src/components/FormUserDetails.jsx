@@ -1,13 +1,30 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import {validateEmail,validatePassword} from "./Validation";
 
 const FormUserDetails = ({ nextStep, handleChange, values }) => {
-  const [showPassword, setShowPassword] = useState(false);
   //const toggleShowPassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
     // Add your validation logic here if needed
+    const isValidEmail = validateEmail(values.email);
+      const isValidPassword = validatePassword(values.password);
+      const isValidConfirmPassword = validatePassword(values.confirmPassword);
+
+      if (!isValidEmail || !isValidPassword || !isValidConfirmPassword) {
+        alert(
+          "Invalid email or password format. Please try again. The Password must contain minimum 8 character, 1 capital letter, 1 small letter, 1 number ,1 special character"
+        );
+        return;
+      }
+
+      if (isValidPassword !== isValidConfirmPassword) {
+        alert("The password and confrim password not matching!");
+        return;
+    }
+    
     nextStep();
   };
 

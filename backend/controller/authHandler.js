@@ -4,12 +4,10 @@ const {
   MSc_DS_student_info,
   MSc_CS_student_info,
   MSc_AI_student_info,
+  Faculty_info,
   Admin_info,
-} = require("../models/PersonalInfo");
-const {
-  Student_Registration,
-  Faculty_Registration,
-} = require("../models/Registration");
+} = require("../models/RegisterDetails");
+
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../models/index");
 
@@ -21,9 +19,9 @@ var salt = bcrypt.genSaltSync(10);
 
 
 //Faculty Login Search Function
-async function FacultyLogin(email,password) {
+async function FacultyLogin(email,password,req,res) {
   let isAvailable;
-  isAvailable = await Faculty_Registration.findOne({
+  isAvailable = await Faculty_info.findOne({
     where: { email: email },
   });
 
@@ -52,9 +50,9 @@ async function FacultyLogin(email,password) {
 }
 
 //Admin Login Search Function
-async function AdminLogin(email,password) {
+async function AdminLogin(email,password,req,res) {
   let isAvailable;
-  isAvailable = await Faculty_Registration.findOne({
+  isAvailable = await Admin_info.findOne({
     where: { email: email },
   });
 
@@ -69,8 +67,8 @@ async function AdminLogin(email,password) {
 
   token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
 
-  res.cookie("sessionId", token, { secure: true });
-  //res.cookie("token", token, { httpOnly: true, secure: true });
+  // res.cookie("sessionId", token, { secure: true });
+  res.cookie("token", token, { httpOnly: true, secure: true });
 
   await Session.create({
     userId: isAvailable.user_id,
@@ -83,11 +81,25 @@ async function AdminLogin(email,password) {
 }
 
 //Student Login search Function
-async function StudentLogin(email,password) {
+async function StudentLogin(email, password,req, res) {
+  const models = [
+    Mtech_student_info,
+    MCA_student_info,
+    MSc_DS_student_info,
+    MSc_CS_student_info,
+    MSc_AI_student_info
+  ];
+
   let isAvailable;
-  isAvailable = await Faculty_Registration.findOne({
-    where: { email: email },
-  });
+  let foundInModel;
+
+  for (const model of models) {
+    isAvailable = await model.findOne({ where: { email: email } });
+    if (isAvailable) {
+      foundInModel = model;
+      break;
+    }
+  }
 
   if (!isAvailable) {
     return res.status(400).send({ message: "User not Found" });
@@ -95,37 +107,39 @@ async function StudentLogin(email,password) {
 
   let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
-  if (!passMatch)
+  if (!passMatch) {
     return res.status(400).send({ message: "Password is incorrect" });
+  }
 
-  token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+  const token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
 
-  res.cookie("sessionId", token, { secure: true });
-  //res.cookie("token", token, { httpOnly: true, secure: true });
+  res.cookie("token", token, { httpOnly: true, secure: true });
+  // res.cookie("sessionId", token, { secure: true });
 
   await Session.create({
     userId: isAvailable.user_id,
     jwt: token,
     status: "valid",
   });
-  console.log("Login Successful !");
 
+  console.log("Login Successful !");
   return res.status(200).send({ success: true, token: token });
 }
 
 async function LoginHandler(req, res) {
-  let { email, password, role } = req.body;
+  const { email, password, role } = req.body;
+  console.log(role);
   switch (role) {
-    case "student":
-      StudentLogin(email,password);
+    case "Student":
+      StudentLogin(email,password,req,res);
       break;
 
-    case "faculty":
-      FacultyLogin(email,password);
+    case "Faculty":
+      FacultyLogin(email,password,req,res);
       break;
 
-    case "admin":
-      AdminLogin(email,password);
+    case "Admin":
+      AdminLogin(email,password,req,res);
       break;
 
     default:
@@ -134,66 +148,9 @@ async function LoginHandler(req, res) {
   }
 }
 
-
-//Student Sign up Handler
-
-async function StudentSignupHandler(req, res) {
-  let { email, password, confirmPassword, name } = req.body;
-  if (password !== confirmPassword)
-    res.status(400).send({ message: "Password not match" });
-
-  var passwordHash = bcrypt.hashSync(password, salt);
-  let isAvailable;
-
-  isAvailable = await Student_Registration.findOne({
-    where: { email: email },
-  });
-
-  if (isAvailable) {
-    res.status(400).send({ message: "user already exist." });
-  }
-
-  let newUser = await Student_Registration.create({
-    email: email,
-    password: passwordHash,
-    name: name,
-  });
-
-  return res.status(200).send({ message: "User created successfully" });
-}
-
-//Faculty Sign up Handler
-
-async function FacultySignupHandler(req, res) {
-  let { email, password, confirmPassword, name } = req.body;
-  if (password !== confirmPassword)
-    res.status(400).send({ message: "Password not match" });
-
-  var passwordHash = bcrypt.hashSync(password, salt);
-  let isAvailable;
-
-  isAvailable = await Faculty_Registration.findOne({
-    where: { email: email },
-  });
-
-  if (isAvailable) {
-    res.status(400).send({ message: "user already exist." });
-  }
-
-  let newUser = await Faculty_Registration.create({
-    email: email,
-    password: passwordHash,
-    name: name,
-  });
-
-  return res
-    .status(200)
-    .send({ message: "User created successfully", success: true });
-}
-
 //Student Registration details
 
-async function StudentRegistrationDetails(req, res) {
+async function StudentRegistrationHandler(req, res) {
   try {
     const {
       name,
@@ -208,14 +165,14 @@ async function StudentRegistrationDetails(req, res) {
       parents_mob_no,
       blood_group,
       email,
+      password,
+      role,
       religion,
       caste,
       nationality,
       register_number,
-      programme,
-      year,
+      programme,      
       batch,
-      semester,
     } = req.body;
 
     let StudentModel;
@@ -244,6 +201,7 @@ async function StudentRegistrationDetails(req, res) {
     if (isAvailable) {
       return res.status(400).send({ message: "User already exists." });
     }
+    var passwordHash = bcrypt.hashSync(password, salt);
 
     await StudentModel.create({
       name: name,
@@ -258,14 +216,14 @@ async function StudentRegistrationDetails(req, res) {
       parents_mob_no: parents_mob_no,
       blood_group: blood_group,
       email: email,
+      password: passwordHash,
+      role:role,
       religion: religion,
       caste: caste,
       nationality: nationality,
       register_number: register_number,
-      programme: programme,
-      year: year,
+      programme: programme,     
       batch: batch,
-      semester: semester,
     });
 
     return res
@@ -298,11 +256,7 @@ async function logoutHandler(req, res) {
   }
 }
 
-module.exports.StudentSignupHandler = StudentSignupHandler;
-module.exports.FacultySignupHandler = FacultySignupHandler;
-
 module.exports.LoginHandler = LoginHandler;
-
 module.exports.forgotPasswordHandler = forgotPasswordHandler;
 module.exports.logoutHandler = logoutHandler;
-module.exports.StudentRegistrationDetails = StudentRegistrationDetails;
+module.exports.StudentRegistrationHandler = StudentRegistrationHandler;

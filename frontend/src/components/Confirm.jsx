@@ -1,11 +1,20 @@
 import React from "react";
+import axios from "axios";
 
 const Confirm = ({ nextStep, prevStep, values }) => {
-  const handleSubmit = (e) => {
+
+  
+  async function handleSubmit(e) {
     e.preventDefault();
     // Handle form submission logic here, e.g., send data to backend
-    nextStep();
-  };
+    const response = await axios.post(
+      "http://localhost:5000/api/auth/register",
+      values
+    );
+    if (response.data.success) {
+      nextStep();
+    }
+  }
 
   return (
     <>
