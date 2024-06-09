@@ -16,6 +16,6 @@ route.post("/register", StudentRegistrationHandler);
 route.post("/forgotPassword", forgotPasswordHandler);
 route.get("/logout", logoutHandler);
 route.get("/check-login", checkLogin);
-route.get('userinfo', UserINFO);
+route.get('/userinfo', UserINFO);
 
 module.exports = route;

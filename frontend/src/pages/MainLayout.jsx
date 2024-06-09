@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import BDULogo from "../../assets/img/BDU_logo.svg";
+import BDULogo from "./../assets/img/BDU_logo.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import StudentNavBar from "./../components/StudentNavBar.json";
+import FacultyNavBar from "./../components/FacultyNavBar.json";
+import AdminNavBar from "./../components/AdminNavBar.json";
 
 function MainLayout() {
-    const navigate = useNavigate();
-    const [role, setRole] = useState(null);
+  const navigate = useNavigate();
+  const [role, setRole] = useState(null);
 
   async function handleLogout() {
     const response = await axios.get("http://localhost:5000/api/auth/logout");
@@ -17,28 +20,45 @@ function MainLayout() {
       console.log("Logout Successful!");
       navigate("/");
     }
-    }
-    
-    async function Fetch_userinfo() {
-        const response = await axios.get("http://localhost:5000/api/auth/userinfo");
+  }
 
-        if (response.data.role) {
-            setRole(response.data.role);
-        } else {
-            console.error("No Data");
-        }
-    }
+  async function Fetch_userinfo() {
+    const response = await axios.get("http://localhost:5000/api/auth/userinfo");
 
-    function roleuser(setRole) {
-        switch (setRole) {
-            case "Student":
-                
-                break;
-        
-            default:
-                break;
-        }
+    if (response.data.role) {
+      setRole(response.data.role);
+    } else {
+      console.error("No Data");
     }
+  }
+
+  function roleuser(Role) {
+    switch (setRole) {
+      case "Student":
+        routeRender(StudentNavBar);
+        break;
+      case "Faculty":
+        routeRender(FacultyNavBar);
+        break;
+      case "Admin":
+        routeRender(AdminNavBar);
+        break;
+      default:
+        break;
+    }
+  }
+
+  function routeRender(jsonfile) {
+    return jsonfile.map((route) => (
+      <Route
+        index
+        path={route.path}
+        element={
+          <ProtectedRoute> lazy={() => import(route.component)}</ProtectedRoute>
+        }
+      />
+    ));
+  }
 
   return (
     <div className="m-0 p-8 box-border flex flex-1  bg-gradient-to-tr from-[#65dfc9]  to-[#6cdbeb]  justify-center items-center font-inter w-full h-screen">

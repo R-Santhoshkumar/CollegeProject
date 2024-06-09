@@ -1,22 +1,22 @@
 [
   {
-    "path": "/StudHome",
+    "Home_path": "/StudHome",
     "component": "./pages/Student/StudHome"
   },
   {
-    "path": "/StudProfile",
+    "Profile_path": "/StudProfile",
     "component": "./pages/Student/StudProfile"
   },
   {
-    "path": "/StudServices",
+    "Services_path": "/StudServices",
     "component": "./pages/Student/StudServices"
   },
   {
-    "path": "/StudHelp",
+    "Help_path": "/StudHelp",
     "component": "./pages/Student/StudHelp"
   },
   {
-    "path": "/StudAbout",
+    "About_path": "/StudAbout",
     "component": "./pages/Student/StudAbout"
   }
 ]

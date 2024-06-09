@@ -59,6 +59,7 @@ import AdmDeleteResult from "./pages/Admin/AdmDeleteResult";
 import AdmResultUploading from "./pages/Admin/AdmResultUploading";
 import AdmSubjectAllocation from "./pages/Admin/AdmSubjectAllocation";
 import ViewResult from "./pages/Student/StudViewResultPage";
+import MainLayout from "./pages/MainLayout";
 
 
 
@@ -111,7 +112,7 @@ function App() {
         {/* <Route path='/' >
         {roleSwitch(setRole)}
         </Route> */}
-        <Route path="/" element={<ProtectedRoute><StudentLayout /></ProtectedRoute>}>
+        <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
           <Route index path="/StudHome" element={<ProtectedRoute><StudHome /></ProtectedRoute>} />
           <Route path="/StudProfile" element={<ProtectedRoute><StudProfile /></ProtectedRoute>} />
           <Route path="/StudServices" element={<ProtectedRoute><StudServices /></ProtectedRoute>} />
