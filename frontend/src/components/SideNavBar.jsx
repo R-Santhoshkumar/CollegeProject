@@ -19,10 +19,9 @@ function SideNavBar() {
   }
 
 
-  useEffect(() => {
-    const response =  axios.get
-  })
-
+  // useEffect(() => {
+  //   const response =  axios.get
+  // })
 
   return (
     <div className=" grid grid-rows-5 justify-center items-center font-sans w-full bg-[#282A36] h-full max-h-screen ">

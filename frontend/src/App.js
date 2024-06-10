@@ -1,11 +1,9 @@
-import React from "react"; // Import React
+import React, { useState } from "react"; // Import React
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
-import MainPage from "./pages/MainPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 // Student Link and Imports
-import StudentLogin from "./pages/Student/StudentLogin";
-import StudentRegister from "./pages/Student/StudentRegister";
+import Login from "./pages/Login";
 import StudHome from "./pages/Student/StudHome";
 import StudProfile from "./pages/Student/StudProfile";
 import StudServices from "./pages/Student/StudServices";
@@ -14,15 +12,16 @@ import StudAbout from "./pages/Student/StudAbout";
 import StudAnalysis from "./pages/Student/StudAnalysis";
 import StudentLayout from "./pages/Student/StudentLayout";
 import StudResult from "./pages/Student/StudResult";
-import StudDetails from "./pages/Student/StudDetails";
+import Register from "./pages/Register";
 import StudGridView from "./pages/Student/StudGridView";
 import StudGridSyllabusView from "./pages/Student/StudGridSyllabusView";
 
+//Json File
 
 // Faculty Link and Imports
 
-import FacultyLogin from "./pages/Faculty/FacultyLogin";
-//import FacultyRegister from "./pages/Faculty/FacultyRegister";
+
+
 import FacHome from "./pages/Faculty/FacHome";
 import FacProfile from "./pages/Faculty/FacProfile";
 //import FacAnalysis from "./pages/Faculty/FacAnalysis";
@@ -49,7 +48,6 @@ import AdmAnalysis from "./pages/Admin/AdmAnalysis";
 import AdmProfile from "./pages/Admin/AdmProfile";
 import AdmHelp from "./pages/Admin/AdmHelp";
 import AdmAbout from "./pages/Admin/AdmAbout";
-import AdminLogin from "./pages/Admin/AdminLogin";
 import AdmUpdateResult from "./pages/Admin/AdmUpdateResult";
 import AdmUpdateResultView from "./pages/Admin/AdmUpdateResultView";
 import AdmUploadRegulation from "./pages/Admin/AdmUploadRegulation";
@@ -61,29 +59,60 @@ import AdmDeleteResult from "./pages/Admin/AdmDeleteResult";
 import AdmResultUploading from "./pages/Admin/AdmResultUploading";
 import AdmSubjectAllocation from "./pages/Admin/AdmSubjectAllocation";
 import ViewResult from "./pages/Student/StudViewResultPage";
+import MainLayout from "./pages/MainLayout";
 
 
 
-
+// import StudentNavBar from "./components/StudentNavBar";
+// import FacultyNavBar from "./components/FacultyNavBar";
+// import AdminNavBar from "./components/AdminNavBar";
 function App() {
-  // renderRoutes(){
-  // return jsonArry.map(route => <Route index path={{ route.path }} element={<ProtectedRoute> lazy={() => import(route.component)}</ProtectedRoute>} />)
+  // const [role, setRole] = useState(null);
+
+  // useEffect(() => {
+  //   async function fetchUserInfo() {
+  //     try {
+  //       const response = await axios.get("http://localhost:5000/api/auth/userinfo", { withCredentials: true });
+  //       if (response.data.role) {
+  //         setRole(response.data.role);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user info", error);
+  //     }
+  //   }
+  //   fetchUserInfo();
+  // }, []);
+
+  // function roleSwitch(role) {
+    
+  //   switch (role) {
+  //     case "Student":
+        
+  //       return renderRoutes(StudentNavBar);
+  //     case "Faculty":
+  //       return renderRoutes(FacultyNavBar);
+  //     case "Admin":
+  //       return renderRoutes(AdminNavBar);
+  //     default:
+  //       return [];
+  //   }
   // }
+
+  // function renderRoutes(jsonfile){
+  // return jsonfile.map(route => <Route index path={ route.path } element={<ProtectedRoute> lazy={() => import(route.component)}</ProtectedRoute>} />)
+  // }
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/StudentLogin" element={<StudentLogin />} />
-        <Route path="/StudentRegister" element={<StudentRegister />} />
-        <Route path="/FacultyLogin" element={<FacultyLogin />} />
-        <Route path="/AdminLogin" element={<AdminLogin />} />
-        <Route path="/StudDetails" element={<StudDetails />} />
-
+        
+        <Route path="/" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
 
         {/* <Route path='/' >
-        {{renderRoutes()}}
+        {roleSwitch(setRole)}
         </Route> */}
-        <Route path="/" element={<ProtectedRoute><StudentLayout /></ProtectedRoute>}>
+        <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
           <Route index path="/StudHome" element={<ProtectedRoute><StudHome /></ProtectedRoute>} />
           <Route path="/StudProfile" element={<ProtectedRoute><StudProfile /></ProtectedRoute>} />
           <Route path="/StudServices" element={<ProtectedRoute><StudServices /></ProtectedRoute>} />

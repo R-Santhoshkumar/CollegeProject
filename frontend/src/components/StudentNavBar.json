@@ -1,0 +1,22 @@
+[
+  {
+    "Home_path": "/StudHome",
+    "component": "./pages/Student/StudHome"
+  },
+  {
+    "Profile_path": "/StudProfile",
+    "component": "./pages/Student/StudProfile"
+  },
+  {
+    "Services_path": "/StudServices",
+    "component": "./pages/Student/StudServices"
+  },
+  {
+    "Help_path": "/StudHelp",
+    "component": "./pages/Student/StudHelp"
+  },
+  {
+    "About_path": "/StudAbout",
+    "component": "./pages/Student/StudAbout"
+  }
+]

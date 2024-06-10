@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { NavLink ,useNavigate} from "react-router-dom";
-import SideTitleBar from "../../components/SideTitleBar";
-import { validateEmail, validatePassword } from "../../components/Validation";
+import { NavLink, useNavigate } from "react-router-dom";
+import SideTitleBar from "../components/SideTitleBar";
+import { validateEmail, validatePassword } from "../components/Validation";
 import axios from "axios";
-import Cookies from 'js-cookie';
-
-
+import Cookies from "js-cookie";
 
 function LoginPage() {
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    role:""
   });
 
   const navigate = useNavigate();
@@ -37,16 +35,16 @@ function LoginPage() {
 
       // Include credentials in request with `withCredentials`
       const response = await axios.post(
-        "http://localhost:5000/api/auth/student_login",
-        formData,
+        "http://localhost:5000/api/auth/login",
+        formData
       );
 
       if (response.data.success) {
         let token = response.data.token;
-        Cookies.set('sessionId', token, {
-          path: '/', // Set path as needed
-          sameSite: 'strict', // Secure option
-          secure: true,// Set for HTTPS
+        Cookies.set("sessionId", token, {
+          path: "/", // Set path as needed
+          sameSite: "strict", // Secure option
+          secure: true, // Set for HTTPS
           //httpOnly: true
         });
         alert("Login successful!");
@@ -66,7 +64,7 @@ function LoginPage() {
       </div>
       <div className="w-[40%] h-full flex flex-col col-span-2 justify-center items-center p-3 rounded-lg">
         <div className="w-full h-auto bg-gradient-to-br from-white/70  to-white/30 backdrop-blur-sm flex flex-col justify-center gap-3 items-center p-5 rounded-lg">
-        <div className=" w-full flex items-center left-0 top-0 justify-start">
+          <div className=" w-full flex items-center left-0 top-0 justify-start">
             <NavLink to="/">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -83,17 +81,19 @@ function LoginPage() {
             </NavLink>
             <div className="flex w-full justify-center items-center">
               <label className="text-[27px] font-semibold text-black">
-                Student Login
+                Login
               </label>
             </div>
           </div>
 
           <form className="w-full h-full" onSubmit={handleSubmit}>
             <div className="flex flex-col pb-3">
-              <label for="email" className="text-lg text-black font-medium">Email-id :</label>
+              <label for="email" className="text-lg text-black font-medium">
+                Email-id :
+              </label>
               <input
                 type="email"
-                className="w-full text-black bg-white/80 rounded-xl p-2 mt-1 focus:outline-none focus:bg-white" 
+                className="w-full text-black bg-white/80 rounded-xl p-2 mt-1 focus:outline-none focus:bg-white"
                 placeholder="Enter the Email-id"
                 name="email"
                 id="email"
@@ -104,7 +104,9 @@ function LoginPage() {
               />
             </div>
             <div className="flex flex-col pb-3">
-              <label for="password" className="text-lg text-black font-medium">Password :</label>
+              <label for="password" className="text-lg text-black font-medium">
+                Password :
+              </label>
               <input
                 type="password"
                 className="w-full text-black bg-white/80 rounded-xl p-2 mt-1 focus:outline-none focus:bg-white"
@@ -115,6 +117,27 @@ function LoginPage() {
                 value={formData.password}
                 required
               />
+            </div>
+            <div className="flex flex-col pb-3">
+              <label
+                for="role"
+                className="text-lg text-black font-medium whitespace-nowrap"
+              >
+                Role:
+              </label>
+              <select
+                className="w-full text-black bg-white/80 rounded-xl p-2 mt-1 focus:outline-none focus:bg-white"
+                name="role"
+                id="role"
+                value={formData.role}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Select Role</option>
+                <option value="Student">Student</option>
+                <option value="Faculty">Faculty</option>
+                <option value="Admin">Admin</option>
+              </select>
             </div>
 
             <div className="justify-end items-center flex">
@@ -133,7 +156,10 @@ function LoginPage() {
             <div className="w-full justify-center items-center flex pt-3 text-lg">
               <label className="text-black">
                 Not a Member?
-                <NavLink to="/StudDetails" className=" hover:text-lg hover:cursor-pointer pl-2 transition ease-in-out duration-500">
+                <NavLink
+                  to="/Register"
+                  className=" hover:text-lg hover:cursor-pointer pl-2 transition ease-in-out duration-500"
+                >
                   Register Now
                 </NavLink>
               </label>
