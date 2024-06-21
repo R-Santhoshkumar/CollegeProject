@@ -5,6 +5,7 @@ const {
   LoginHandler,
   StudentRegistrationHandler,
   UserINFO,
+  checkSession
 } = require("../controller/authHandler");
 const { checkLogin } = require("../common");
 
@@ -17,5 +18,6 @@ route.post("/forgotPassword", forgotPasswordHandler);
 route.get("/logout", logoutHandler);
 route.get("/check-login", checkLogin);
 route.get('/userinfo', UserINFO);
+route.get('/check-session', checkSession);
 
 module.exports = route;

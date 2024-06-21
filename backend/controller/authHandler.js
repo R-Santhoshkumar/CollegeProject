@@ -11,10 +11,10 @@ const {
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../models/index");
 
-const Session = require("../models/Session");
+// const Session = require("../models/Session");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
-let jwtsec = "dflkjnhiuhtiunnbithuynbidhiunstiuhynnshiuyrb";
+let jwtsec = process.env.JWTSec;
 var salt = bcrypt.genSaltSync(10);
 
 
@@ -28,6 +28,7 @@ async function FacultyLogin(email,password,req,res) {
   if (!isAvailable) {
     return res.status(400).send({ message: "User not Found" });
   }
+  
 
   let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
@@ -35,8 +36,9 @@ async function FacultyLogin(email,password,req,res) {
     return res.status(400).send({ message: "Password is incorrect" });
 
   token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+  req.session.token = token;
 
-  res.cookie("sessionId", token, { secure: true });
+  // res.cookie("sessionId", token, { secure: true });
   //res.cookie("token", token, { httpOnly: true, secure: true });
 
   await Session.create({
@@ -59,16 +61,18 @@ async function AdminLogin(email,password,req,res) {
   if (!isAvailable) {
     return res.status(400).send({ message: "User not Found" });
   }
+  
 
   let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
   if (!passMatch)
     return res.status(400).send({ message: "Password is incorrect" });
 
-  token = jwt.sign({ email,role }, jwtsec, { expiresIn: 600 * 600 });
+  token = jwt.sign({ email, role }, jwtsec, { expiresIn: 600 * 600 });
+  req.session.token = token;
 
   // res.cookie("sessionId", token, { secure: true });
-  res.cookie("token", token, { httpOnly: true, secure: true });
+  // res.cookie("token", token, { httpOnly: true, secure: true });
 
   await Session.create({
     userId: isAvailable.user_id,
@@ -81,7 +85,7 @@ async function AdminLogin(email,password,req,res) {
 }
 
 //Student Login search Function
-async function StudentLogin(email, password,req, res) {
+async function StudentLogin(email, password, req, res) {
   const models = [
     Mtech_student_info,
     MCA_student_info,
@@ -110,21 +114,23 @@ async function StudentLogin(email, password,req, res) {
   if (!passMatch) {
     return res.status(400).send({ message: "Password is incorrect" });
   }
-
+  
   const token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
 
-  res.cookie("token", token, { httpOnly: true, secure: true });
-  // res.cookie("sessionId", token, { secure: true });
+  // Make sure to access the session correctly
+  req.session.token = token;
+  console.log(token);
 
-  await Session.create({
-    userId: isAvailable.user_id,
-    jwt: token,
-    status: "valid",
-  });
+  // await Session.create({
+  //   userId: isAvailable.user_id,
+  //   jwt: token,
+  //   status: "valid",
+  // });
 
   console.log("Login Successful !");
   return res.status(200).send({ success: true, token: token });
 }
+
 
 async function LoginHandler(req, res) {
   const { email, password, role } = req.body;
@@ -147,17 +153,30 @@ async function LoginHandler(req, res) {
       break;
   }
 }
+//Checking session
+async function checkSession(req, res) {
+  if (req.session.token) {
+    res.status(200).send({ success: true, token: req.session.token });
+    console.log("session Found");
+  } else {
+    res.status(200).send({ success: false, message: 'No token found in session' });
+    console.log("session not found");
+  }
+}
+
 
 //Storing User information
-function UserINFO(req, res) {
-  const token = req.cookies.sessionId;
+async function UserINFO(req, res) {
+  
+  const token = req.session.token;
+  console.log(token);
   if (!token) {
     return res.status(401).send({ message: "Unauthorized" });
   }
-
   try {
     const decoded = jwt.verify(token, jwtsec);
-    return res.status(200).send({ email: decoded.email, role: decoded.role });
+    
+    return res.status(200).send({role: decoded.role });
   } catch (error) {
     return res.status(401).send({ message: "Unauthorized" });
   }
@@ -257,19 +276,13 @@ function forgotPasswordHandler(req, res) {
 //Logout Handler
 
 async function logoutHandler(req, res) {
-  try {
-    res.clearCookie("token");
-
-    console.log("Logout Successful ! ");
-    return res
-      .status(200)
-      .send({ success: true, message: "Successfully logged out" });
-  } catch (err) {
-    console.error(err);
-    return res
-      .status(500)
-      .send({ success: false, message: "Internal Server Error" });
-  }
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send('Error logging out');
+    }
+    res.clearCookie('connect.sid'); // Clear the session cookie
+    res.send('Logged out');
+  });
 }
 
 module.exports.LoginHandler = LoginHandler;
@@ -277,3 +290,4 @@ module.exports.forgotPasswordHandler = forgotPasswordHandler;
 module.exports.logoutHandler = logoutHandler;
 module.exports.StudentRegistrationHandler = StudentRegistrationHandler;
 module.exports.UserINFO = UserINFO;
+module.exports.checkSession = checkSession;

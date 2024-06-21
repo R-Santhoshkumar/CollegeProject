@@ -41,7 +41,7 @@ function LoginPage() {
 
       if (response.data.success) {
         let token = response.data.token;
-        Cookies.set("sessionId", token, {
+        Cookies.set("token", token, {
           path: "/", // Set path as needed
           sameSite: "strict", // Secure option
           secure: true, // Set for HTTPS
