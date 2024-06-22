@@ -246,7 +246,7 @@ function MainLayout() {
   useEffect(() => {
     async function CheckUserInfo() {
       try {
-        const response = await axios.get("http://localhost:5000/api/auth/check-session");
+        const response = await axios.get("http://localhost:5000/api/auth/userinfo");
         if (response.data.true) {
           setRole(response.data.true);
         } else {

@@ -8,9 +8,21 @@ const {
   Admin_info,
 } = require("../models/RegisterDetails");
 
+
+const express = require('express');
+let app = express();
+const session = require("express-session");
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../models/index");
-
+app.use(session({
+  secret: process.env.SessionSEC,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+      secure: false,
+      maxAge: 60000 * 60 * 24 //1 day
+  }
+}));
 // const Session = require("../models/Session");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
@@ -19,70 +31,70 @@ var salt = bcrypt.genSaltSync(10);
 
 
 //Faculty Login Search Function
-async function FacultyLogin(email,password,req,res) {
-  let isAvailable;
-  isAvailable = await Faculty_info.findOne({
-    where: { email: email },
-  });
+// async function FacultyLogin(email,password,req,res) {
+//   let isAvailable;
+//   isAvailable = await Faculty_info.findOne({
+//     where: { email: email },
+//   });
 
-  if (!isAvailable) {
-    return res.status(400).send({ message: "User not Found" });
-  }
+//   if (!isAvailable) {
+//     return res.status(400).send({ message: "User not Found" });
+//   }
   
 
-  let passMatch = bcrypt.compareSync(password, isAvailable.password);
+//   let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
-  if (!passMatch)
-    return res.status(400).send({ message: "Password is incorrect" });
+//   if (!passMatch)
+//     return res.status(400).send({ message: "Password is incorrect" });
 
-  token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
-  req.session.token = token;
+//   token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+//   req.session.token = token;
 
-  // res.cookie("sessionId", token, { secure: true });
-  //res.cookie("token", token, { httpOnly: true, secure: true });
+//   // res.cookie("sessionId", token, { secure: true });
+//   //res.cookie("token", token, { httpOnly: true, secure: true });
 
-  await Session.create({
-    userId: isAvailable.user_id,
-    jwt: token,
-    status: "valid",
-  });
-  console.log("Login Successful !");
+//   // await Session.create({
+//   //   userId: isAvailable.user_id,
+//   //   jwt: token,
+//   //   status: "valid",
+//   // });
+//   console.log("Login Successful !");
 
-  return res.status(200).send({ success: true, token: token });
-}
+//   return res.status(200).send({ success: true, token: token });
+// }
 
 //Admin Login Search Function
-async function AdminLogin(email,password,req,res) {
-  let isAvailable;
-  isAvailable = await Admin_info.findOne({
-    where: { email: email },
-  });
+// async function AdminLogin(email,password,req,res) {
+//   let isAvailable;
+//   isAvailable = await Admin_info.findOne({
+//     where: { email: email },
+//   });
 
-  if (!isAvailable) {
-    return res.status(400).send({ message: "User not Found" });
-  }
+//   if (!isAvailable) {
+//     return res.status(400).send({ message: "User not Found" });
+//   }
   
 
-  let passMatch = bcrypt.compareSync(password, isAvailable.password);
+//   let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
-  if (!passMatch)
-    return res.status(400).send({ message: "Password is incorrect" });
+//   if (!passMatch)
+//     return res.status(400).send({ message: "Password is incorrect" });
 
-  token = jwt.sign({ email, role }, jwtsec, { expiresIn: 600 * 600 });
-  req.session.token = token;
+//   token = jwt.sign({ email, role }, jwtsec, { expiresIn: 600 * 600 });
+//   req.session.token = token;
 
-  // res.cookie("sessionId", token, { secure: true });
-  // res.cookie("token", token, { httpOnly: true, secure: true });
+//   // res.cookie("sessionId", token, { secure: true });
+//   // res.cookie("token", token, { httpOnly: true, secure: true });
 
-  await Session.create({
-    userId: isAvailable.user_id,
-    jwt: token,
-    status: "valid",
-  });
-  console.log("Login Successful !");
+//   // await Session.create({
+//   //   userId: isAvailable.user_id,
+//   //   jwt: token,
+//   //   status: "valid",
+//   // });
+//   console.log("Login Successful !");
 
-  return res.status(200).send({ success: true, token: token });
-}
+//   return res.status(200).send({ success: true, token: token });
+// }
 
 //Student Login search Function
 async function StudentLogin(email, password, req, res) {
@@ -118,8 +130,8 @@ async function StudentLogin(email, password, req, res) {
   const token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
 
   // Make sure to access the session correctly
-  req.session.token = token;
-  console.log(token);
+  req.session.token = token
+  console.log(req.session.token);
 
   // await Session.create({
   //   userId: isAvailable.user_id,
@@ -128,7 +140,7 @@ async function StudentLogin(email, password, req, res) {
   // });
 
   console.log("Login Successful !");
-  return res.status(200).send({ success: true, token: token });
+  return res.status(200).send({ success: true, token: req.session.token });
 }
 
 
