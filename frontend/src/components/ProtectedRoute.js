@@ -11,7 +11,7 @@ function ProtectedRoute({ children }) {
 
   useEffect(() => {
     
-    const sessionId = Cookies.get('token');
+    const sessionId = Cookies.get('sessionId');
 
     // Validate the sessionId using a more comprehensive check
     const isLoggedIn = sessionId; // Replace with your validation logic

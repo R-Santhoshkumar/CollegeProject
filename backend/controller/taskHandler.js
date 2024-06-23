@@ -7,8 +7,9 @@ const {
   Faculty_info,
   Admin_info,
 } = require("../models/RegisterDetails");
-let jwtsec = "dflkjnhiuhtiunnbithuynbidhiunstiuhynnshiuyrb";
+let jwtsec = process.env.JWTSec;
 const jwt = require("jsonwebtoken"); // Import the jwt library
+const CookieParser = require("cookie-parser");
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../models/index");
 const fs = require("fs");
@@ -775,6 +776,24 @@ async function Upload_Subject_Allocation(req, res) {
   }
 }
 
+
+async function UserINFO(req, res) {
+  // Extract JWT from cookies
+
+  let token = req.cookies.sessionId; // Assuming 'token' is the name of your JWT cookie
+  console.log(token);
+
+  if (!token) {
+    return res.status(401).send({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, jwtsec);
+    return res.status(200).send({ role: decoded.role });
+  } catch (error) {
+    return res.status(401).send({ message: "Unauthorized" });
+  }
+}
 module.exports.FacultyProfileHandler = FacultyProfileHandler;
 module.exports.StudentProfileHandler = StudentProfileHandler;
 module.exports.Internal_Result_Upload = Internal_Result_Upload;
@@ -789,3 +808,4 @@ module.exports.Upload_Regulation = Upload_Regulation;
 module.exports.Upload_Subject_Allocation = Upload_Subject_Allocation;
 module.exports.Update_Regulation = Update_Regulation;
 module.exports.Delete_Result = Delete_Result;
+module.exports.UserINFO = UserINFO;

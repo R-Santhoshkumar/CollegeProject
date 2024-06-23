@@ -8,169 +8,188 @@ const {
   Admin_info,
 } = require("../models/RegisterDetails");
 
-
-
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../models/index");
-const express = require('express');
+const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const jwtsec = process.env.JWTSec;
 const salt = bcrypt.genSaltSync(10);
 
-
 //Faculty Login Search Function
-async function FacultyLogin(email,password,req,res) {
-  let isAvailable;
-  isAvailable = await Faculty_info.findOne({
-    where: { email: email },
-  });
+// async function FacultyLogin(email,password,req,res) {
+//   let isAvailable;
+//   isAvailable = await Faculty_info.findOne({
+//     where: { email: email },
+//   });
 
-  if (!isAvailable) {
-    return res.status(400).send({ message: "User not Found" });
-  }
-  
+//   if (!isAvailable) {
+//     return res.status(400).send({ message: "User not Found" });
+//   }
 
-  let passMatch = bcrypt.compareSync(password, isAvailable.password);
+//   let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
-  if (!passMatch)
-    return res.status(400).send({ message: "Password is incorrect" });
+//   if (!passMatch)
+//     return res.status(400).send({ message: "Password is incorrect" });
 
-  let token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
-  req.session.token = token
-  console.log(req.session.token);
-  res.cookie("sessionId", token, { httpOnly: true, secure: true });
-  
-  console.log("Login Successful !");
+//   let token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+//   req.session.token = token
+//   console.log(req.session.token);
+//   res.cookie("sessionId", token, { httpOnly: true, secure: true });
 
-  return res.status(200).send({ success: true, token: token });
-}
+//   console.log("Login Successful !");
+
+//   return res.status(200).send({ success: true, token: token });
+// }
 
 //Admin Login Search Function
-async function AdminLogin(email,password,req,res) {
-  let isAvailable;
-  isAvailable = await Admin_info.findOne({
-    where: { email: email },
-  });
+// async function AdminLogin(email,password,req,res) {
+//   let isAvailable;
+//   isAvailable = await Admin_info.findOne({
+//     where: { email: email },
+//   });
 
-  if (!isAvailable) {
-    return res.status(400).send({ message: "User not Found" });
-  }
-  
+//   if (!isAvailable) {
+//     return res.status(400).send({ message: "User not Found" });
+//   }
 
-  let passMatch = bcrypt.compareSync(password, isAvailable.password);
+//   let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
-  if (!passMatch)
-    return res.status(400).send({ message: "Password is incorrect" });
+//   if (!passMatch)
+//     return res.status(400).send({ message: "Password is incorrect" });
 
-  let token = jwt.sign({ email, role }, jwtsec, { expiresIn: 600 * 600 });
-  req.session.token = token
-  console.log(req.session.token);
-  res.cookie("sessionId", token, { httpOnly: true, secure: true });
+//   let token = jwt.sign({ email, role }, jwtsec, { expiresIn: 600 * 600 });
+//   req.session.token = token
+//   console.log(req.session.token);
+//   res.cookie("sessionId", token, { httpOnly: true, secure: true });
 
- 
-  console.log("Login Successful !");
+//   console.log("Login Successful !");
 
-  return res.status(200).send({ success: true, token: token });
-}
+//   return res.status(200).send({ success: true, token: token });
+// }
 
 //Student Login search Function
-async function StudentLogin(email, password, req, res) {
-  const models = [
-    Mtech_student_info,
-    MCA_student_info,
-    MSc_DS_student_info,
-    MSc_CS_student_info,
-    MSc_AI_student_info
-  ];
+// async function StudentLogin(email, password, req, res) {
+//   const models = [
+//     Mtech_student_info,
+//     MCA_student_info,
+//     MSc_DS_student_info,
+//     MSc_CS_student_info,
+//     MSc_AI_student_info
+//   ];
 
-  let isAvailable;
-  let foundInModel;
+//   let isAvailable;
+//   let foundInModel;
 
-  for (const model of models) {
-    isAvailable = await model.findOne({ where: { email: email } });
-    if (isAvailable) {
-      foundInModel = model;
-      break;
-    }
-  }
+//   for (const model of models) {
+//     isAvailable = await model.findOne({ where: { email: email } });
+//     if (isAvailable) {
+//       foundInModel = model;
+//       break;
+//     }
+//   }
 
-  if (!isAvailable) {
-    return res.status(400).send({ message: "User not Found" });
-  }
+//   if (!isAvailable) {
+//     return res.status(400).send({ message: "User not Found" });
+//   }
 
-  let passMatch = bcrypt.compareSync(password, isAvailable.password);
+//   let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
-  if (!passMatch) {
-    return res.status(400).send({ message: "Password is incorrect" });
-  }
-  
-  let token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+//   if (!passMatch) {
+//     return res.status(400).send({ message: "Password is incorrect" });
+//   }
 
-  // Make sure to access the session correctly
-  req.session.token = token
-  console.log(req.session.token);
-  res.cookie("sessionId", token, { httpOnly: true});
+//   let token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
 
-  console.log("Login Successful !");
-  return res.status(200).send({ success: true, token: token });
-}
+//   // Make sure to access the session correctly
+//   req.session.token = token
+//   console.log(req.session.token);
+//   res.cookie("sessionId", token, { httpOnly: true});
 
+//   console.log("Login Successful !");
+//   return res.status(200).send({ success: true, token: token });
+// }
 
 async function LoginHandler(req, res) {
   const { email, password, role } = req.body;
   console.log(role);
-  switch (role) {
-    case "Student":
-      StudentLogin(email,password,req,res);
-      break;
 
-    case "Faculty":
-      FacultyLogin(email,password,req,res);
-      break;
+  let isAvailable;
+  let foundInModel;
 
-    case "Admin":
-      AdminLogin(email,password,req,res);
-      break;
+  try {
+    switch (role) {
+      case "Student":
+        const models = [
+          Mtech_student_info,
+          MCA_student_info,
+          MSc_DS_student_info,
+          MSc_CS_student_info,
+          MSc_AI_student_info,
+        ];
 
-    default:
-      res.send("User email is not found!")
-      break;
+        for (const model of models) {
+          isAvailable = await model.findOne({ where: { email: email } });
+          if (isAvailable) {
+            foundInModel = model;
+            break;
+          }
+        }
+        break;
+
+      case "Faculty":
+        isAvailable = await Faculty_info.findOne({
+          where: { email: email },
+        });
+        break;
+
+      case "Admin":
+        isAvailable = await Admin_info.findOne({
+          where: { email: email },
+        });
+        break;
+
+      default:
+        return res.status(400).send({ message: "Invalid user role!" });
+    }
+
+    if (!isAvailable) {
+      return res.status(400).send({ message: "User not found" });
+    }
+
+    const passMatch = bcrypt.compareSync(password, isAvailable.password);
+
+    if (!passMatch) {
+      return res.status(400).send({ message: "Password is incorrect" });
+    }
+
+    const token = jwt.sign({ email, role }, process.env.JWTSec, { expiresIn: '10h' });
+    req.session.sessionId = token;
+    console.log(req.session);
+    res.cookie("sessionId", token, { httpOnly: true, secure: true });
+
+    console.log("Login Successful!");
+    return res.status(200).send({ success: true, token: token });
+
+  } catch (error) {
+    console.error("Error during login:", error);
+    return res.status(500).send({ message: "Internal server error" });
   }
 }
 //Checking session
 async function checkSession(req, res) {
-  if (req.session.token) {
+  console.log(req.session);
+  if (req.session.sessionId) {
     res.status(200).send({ success: true, token: req.session.token });
     console.log("session Found");
   } else {
-    res.status(200).send({ success: false, message: 'No token found in session' });
+    res
+      .status(200)
+      .send({ success: false, message: "No token found in session" });
     console.log("session not found");
   }
 }
-
-
 //Storing User information
-async function UserINFO(req, res) {
-  // Extract JWT from cookies
-  
-  let token = req.cookies;// Assuming 'token' is the name of your JWT cookie
-  console.log(token);
-  
-
-  if (!token) {
-    return res.status(401).send({ message: "Unauthorized" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, jwtsec);
-    return res.status(200).send({ role: decoded.role });
-  } catch (error) {
-    return res.status(401).send({ message: "Unauthorized" });
-  }
-}
-
-
 //Student Registration details
 
 async function StudentRegistrationHandler(req, res) {
@@ -194,7 +213,7 @@ async function StudentRegistrationHandler(req, res) {
       caste,
       nationality,
       register_number,
-      programme,      
+      programme,
       batch,
     } = req.body;
 
@@ -240,12 +259,12 @@ async function StudentRegistrationHandler(req, res) {
       blood_group: blood_group,
       email: email,
       password: passwordHash,
-      role:role,
+      role: role,
       religion: religion,
       caste: caste,
       nationality: nationality,
       register_number: register_number,
-      programme: programme,     
+      programme: programme,
       batch: batch,
     });
 
@@ -265,9 +284,8 @@ function forgotPasswordHandler(req, res) {
 
 async function logoutHandler(req, res) {
   try {
-   
     res.clearCookie("token");
-    
+
     console.log("Logout Successful ! ");
     return res
       .status(200)
@@ -284,5 +302,5 @@ module.exports.LoginHandler = LoginHandler;
 module.exports.forgotPasswordHandler = forgotPasswordHandler;
 module.exports.logoutHandler = logoutHandler;
 module.exports.StudentRegistrationHandler = StudentRegistrationHandler;
-module.exports.UserINFO = UserINFO;
+// module.exports.UserINFO = UserINFO;
 module.exports.checkSession = checkSession;

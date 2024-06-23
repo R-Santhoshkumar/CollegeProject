@@ -1,7 +1,7 @@
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const express = require("express");
-const { FacultyProfileHandler, Fetch_Courses, Fetch_GridSyllabus, Fetch_Marks, Internal_Result_Upload, External_Result_Upload, StudentProfileHandler, Fetch_Consolidate, Update_Marks, AdminProfileHandler, Upload_Regulation, Delete_Result, Upload_Subject_Allocation } = require('../controller/taskHandler');
+const { FacultyProfileHandler, Fetch_Courses, Fetch_GridSyllabus, Fetch_Marks, Internal_Result_Upload, External_Result_Upload, StudentProfileHandler, Fetch_Consolidate, Update_Marks, AdminProfileHandler, Upload_Regulation, Delete_Result, Upload_Subject_Allocation,UserINFO } = require('../controller/taskHandler');
 const { ResultView } = require("../controller/viewHandler");
 const roleSwitch = require("../common/roleMaker");
 const { Fetch_Regulation } = require("../API/dbTableapi");
@@ -10,6 +10,7 @@ let route = express.Router();
 route.post('/faculty_profileinfo', FacultyProfileHandler);
 route.post('/student_profileinfo', StudentProfileHandler);
 route.post('/admin_profileinfo', AdminProfileHandler);
+route.get('/userinfo', UserINFO);
 route.get('/roleSwitch', roleSwitch);
 route.get('/resultview', ResultView);
 route.get('/fetch_consolidate',Fetch_Consolidate)
