@@ -153,8 +153,9 @@ async function checkSession(req, res) {
 //Storing User information
 async function UserINFO(req, res) {
   // Extract JWT from cookies
-  console.log(req.cookies.token);
-  let token = req.cookies.token; // Assuming 'token' is the name of your JWT cookie
+  
+  let token = req.cookies.token;// Assuming 'token' is the name of your JWT cookie
+  console.log(token);
   
 
   if (!token) {

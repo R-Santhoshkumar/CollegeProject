@@ -239,7 +239,8 @@ function MainLayout() {
       } catch (error) {
         console.error("Error fetching user info:", error);
       }
-    }
+      
+  } fetchUserInfo();
 
   // useEffect(() => {
   //   async function CheckUserInfo() {
