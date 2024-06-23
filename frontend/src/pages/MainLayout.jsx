@@ -227,7 +227,7 @@ function MainLayout() {
   const [role, setRole] = useState(null);
   const [navLinks, setNavLinks] = useState([]);
 
-  useEffect(() => {
+
     async function fetchUserInfo() {
       try {
         const response = await axios.get("http://localhost:5000/api/auth/userinfo");
@@ -240,8 +240,6 @@ function MainLayout() {
         console.error("Error fetching user info:", error);
       }
     }
-    fetchUserInfo();
-  }, []);
 
   // useEffect(() => {
   //   async function CheckUserInfo() {
