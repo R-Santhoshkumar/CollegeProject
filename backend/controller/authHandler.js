@@ -9,92 +9,70 @@ const {
 } = require("../models/RegisterDetails");
 
 
-const express = require('express');
-let app = express();
-const session = require("express-session");
+
 const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = require("../models/index");
-app.use(session({
-  secret: process.env.SessionSEC,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-      secure: false,
-      maxAge: 60000 * 60 * 24 //1 day
-  }
-}));
-// const Session = require("../models/Session");
+const express = require('express');
 const bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
-let jwtsec = process.env.JWTSec;
-var salt = bcrypt.genSaltSync(10);
+const jwt = require("jsonwebtoken");
+const jwtsec = process.env.JWTSec;
+const salt = bcrypt.genSaltSync(10);
 
 
 //Faculty Login Search Function
-// async function FacultyLogin(email,password,req,res) {
-//   let isAvailable;
-//   isAvailable = await Faculty_info.findOne({
-//     where: { email: email },
-//   });
+async function FacultyLogin(email,password,req,res) {
+  let isAvailable;
+  isAvailable = await Faculty_info.findOne({
+    where: { email: email },
+  });
 
-//   if (!isAvailable) {
-//     return res.status(400).send({ message: "User not Found" });
-//   }
+  if (!isAvailable) {
+    return res.status(400).send({ message: "User not Found" });
+  }
   
 
-//   let passMatch = bcrypt.compareSync(password, isAvailable.password);
+  let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
-//   if (!passMatch)
-//     return res.status(400).send({ message: "Password is incorrect" });
+  if (!passMatch)
+    return res.status(400).send({ message: "Password is incorrect" });
 
-//   token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
-//   req.session.token = token;
+  let token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+  req.session.token = token
+  console.log(req.session.token);
+  res.cookie("token", token, { httpOnly: true, secure: true });
+  
+  console.log("Login Successful !");
 
-//   // res.cookie("sessionId", token, { secure: true });
-//   //res.cookie("token", token, { httpOnly: true, secure: true });
-
-//   // await Session.create({
-//   //   userId: isAvailable.user_id,
-//   //   jwt: token,
-//   //   status: "valid",
-//   // });
-//   console.log("Login Successful !");
-
-//   return res.status(200).send({ success: true, token: token });
-// }
+  return res.status(200).send({ success: true, token: token });
+}
 
 //Admin Login Search Function
-// async function AdminLogin(email,password,req,res) {
-//   let isAvailable;
-//   isAvailable = await Admin_info.findOne({
-//     where: { email: email },
-//   });
+async function AdminLogin(email,password,req,res) {
+  let isAvailable;
+  isAvailable = await Admin_info.findOne({
+    where: { email: email },
+  });
 
-//   if (!isAvailable) {
-//     return res.status(400).send({ message: "User not Found" });
-//   }
+  if (!isAvailable) {
+    return res.status(400).send({ message: "User not Found" });
+  }
   
 
-//   let passMatch = bcrypt.compareSync(password, isAvailable.password);
+  let passMatch = bcrypt.compareSync(password, isAvailable.password);
 
-//   if (!passMatch)
-//     return res.status(400).send({ message: "Password is incorrect" });
+  if (!passMatch)
+    return res.status(400).send({ message: "Password is incorrect" });
 
-//   token = jwt.sign({ email, role }, jwtsec, { expiresIn: 600 * 600 });
-//   req.session.token = token;
+  let token = jwt.sign({ email, role }, jwtsec, { expiresIn: 600 * 600 });
+  req.session.token = token
+  console.log(req.session.token);
+  res.cookie("token", token, { httpOnly: true, secure: true });
 
-//   // res.cookie("sessionId", token, { secure: true });
-//   // res.cookie("token", token, { httpOnly: true, secure: true });
+ 
+  console.log("Login Successful !");
 
-//   // await Session.create({
-//   //   userId: isAvailable.user_id,
-//   //   jwt: token,
-//   //   status: "valid",
-//   // });
-//   console.log("Login Successful !");
-
-//   return res.status(200).send({ success: true, token: token });
-// }
+  return res.status(200).send({ success: true, token: token });
+}
 
 //Student Login search Function
 async function StudentLogin(email, password, req, res) {
@@ -127,20 +105,15 @@ async function StudentLogin(email, password, req, res) {
     return res.status(400).send({ message: "Password is incorrect" });
   }
   
-  const token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
+  let token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
 
   // Make sure to access the session correctly
   req.session.token = token
   console.log(req.session.token);
-
-  // await Session.create({
-  //   userId: isAvailable.user_id,
-  //   jwt: token,
-  //   status: "valid",
-  // });
+  res.cookie("token", token, { httpOnly: true});
 
   console.log("Login Successful !");
-  return res.status(200).send({ success: true, token: req.session.token });
+  return res.status(200).send({ success: true, token: token });
 }
 
 
@@ -179,20 +152,22 @@ async function checkSession(req, res) {
 
 //Storing User information
 async function UserINFO(req, res) {
+  // Extract JWT from cookies
+  console.log(req.cookies.token);
+  let token = req.cookies.token; // Assuming 'token' is the name of your JWT cookie
   
-  const token = req.session.token;
-  console.log(token);
+
   if (!token) {
     return res.status(401).send({ message: "Unauthorized" });
   }
+
   try {
     const decoded = jwt.verify(token, jwtsec);
-    
-    return res.status(200).send({role: decoded.role });
+    return res.status(200).send({ role: decoded.role });
   } catch (error) {
     return res.status(401).send({ message: "Unauthorized" });
   }
-};
+}
 
 
 //Student Registration details
@@ -288,13 +263,20 @@ function forgotPasswordHandler(req, res) {
 //Logout Handler
 
 async function logoutHandler(req, res) {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send('Error logging out');
-    }
-    res.clearCookie('connect.sid'); // Clear the session cookie
-    res.send('Logged out');
-  });
+  try {
+   
+    res.clearCookie("token");
+    
+    console.log("Logout Successful ! ");
+    return res
+      .status(200)
+      .send({ success: true, message: "Successfully logged out" });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .send({ success: false, message: "Internal Server Error" });
+  }
 }
 
 module.exports.LoginHandler = LoginHandler;

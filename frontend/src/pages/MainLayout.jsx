@@ -227,28 +227,12 @@ function MainLayout() {
   const [role, setRole] = useState(null);
   const [navLinks, setNavLinks] = useState([]);
 
-  // useEffect(() => {
-  //   async function fetchUserInfo() {
-  //     try {
-  //       const response = await axios.get("http://localhost:5000/api/auth/userinfo");
-  //       if (response.data.role) {
-  //         setRole(response.data.role);
-  //       } else {
-  //         console.error("No Data");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching user info:", error);
-  //     }
-  //   }
-  //   fetchUserInfo();
-  // }, []);
-
   useEffect(() => {
-    async function CheckUserInfo() {
+    async function fetchUserInfo() {
       try {
         const response = await axios.get("http://localhost:5000/api/auth/userinfo");
-        if (response.data.true) {
-          setRole(response.data.true);
+        if (response.data.role) {
+          setRole(response.data.role);
         } else {
           console.error("No Data");
         }
@@ -256,8 +240,24 @@ function MainLayout() {
         console.error("Error fetching user info:", error);
       }
     }
-    CheckUserInfo();
+    fetchUserInfo();
   }, []);
+
+  // useEffect(() => {
+  //   async function CheckUserInfo() {
+  //     try {
+  //       const response = await axios.get("http://localhost:5000/api/auth/check-session");
+  //       if (response.data.true) {
+  //         setRole(response.data.true);
+  //       } else {
+  //         console.error("No Data");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user info:", error);
+  //     }
+  //   }
+  //   CheckUserInfo();
+  // }, []);
 
   useEffect(() => {
     function roleUser(role) {

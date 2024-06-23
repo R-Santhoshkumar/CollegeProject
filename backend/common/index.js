@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken');
-let jwtsec = "dflkjnhiuhtiunnbithuynbidhiunstiuhynnshiuyrb";
+let jwtsec = process.env.JWTSec;
 async function checkLogin(req, res, next) {
     
     let authHeader = req.header('Authorization');

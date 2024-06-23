@@ -9,8 +9,10 @@ const CookieParser = require("cookie-parser");
 // const fs = require('fs');
 // const xlsx = require('xlsx');
 const session = require('express-session');
+const jwt = require("jsonwebtoken");
 const bodyParser = require('body-parser');
 const helmet = require("helmet");
+require('dotenv').config();
 
 sequelize.authenticate().then(() => {
     console.log('Connection established Successfully');
@@ -31,16 +33,12 @@ app.use(session({
     secret: process.env.SessionSEC,
     resave: false,
     saveUninitialized: true,
-    cookie: {
-        secure: false,
-        maxAge: 60000 * 60 * 24 //1 day
-    }
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(CookieParser());
 app.use(helmet());
-require('dotenv').config();
+
 app.use('/api', indexRoute);
 app.get('/', (req, res) => {
     res.send('<h1>Express is running...<h1>')
