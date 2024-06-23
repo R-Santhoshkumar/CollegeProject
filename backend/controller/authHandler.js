@@ -39,7 +39,7 @@ async function FacultyLogin(email,password,req,res) {
   let token = jwt.sign({ email }, jwtsec, { expiresIn: 600 * 600 });
   req.session.token = token
   console.log(req.session.token);
-  res.cookie("token", token, { httpOnly: true, secure: true });
+  res.cookie("sessionId", token, { httpOnly: true, secure: true });
   
   console.log("Login Successful !");
 
@@ -66,7 +66,7 @@ async function AdminLogin(email,password,req,res) {
   let token = jwt.sign({ email, role }, jwtsec, { expiresIn: 600 * 600 });
   req.session.token = token
   console.log(req.session.token);
-  res.cookie("token", token, { httpOnly: true, secure: true });
+  res.cookie("sessionId", token, { httpOnly: true, secure: true });
 
  
   console.log("Login Successful !");
@@ -110,7 +110,7 @@ async function StudentLogin(email, password, req, res) {
   // Make sure to access the session correctly
   req.session.token = token
   console.log(req.session.token);
-  res.cookie("token", token, { httpOnly: true});
+  res.cookie("sessionId", token, { httpOnly: true});
 
   console.log("Login Successful !");
   return res.status(200).send({ success: true, token: token });
@@ -154,7 +154,7 @@ async function checkSession(req, res) {
 async function UserINFO(req, res) {
   // Extract JWT from cookies
   
-  let token = req.cookies.token;// Assuming 'token' is the name of your JWT cookie
+  let token = req.cookies;// Assuming 'token' is the name of your JWT cookie
   console.log(token);
   
 

@@ -55,7 +55,7 @@ const FormUserDetails = ({ nextStep, handleChange, values }) => {
         <form onSubmit={handleSubmit}>
           <div className="flex gap-3 items-center pb-3">
             <label
-              for="email"
+              htmlFor="email"
               className="text-lg text-black font-medium whitespace-nowrap"
             >
               Email-id :
@@ -73,7 +73,7 @@ const FormUserDetails = ({ nextStep, handleChange, values }) => {
           </div>
           <div className="flex gap-3 items-center pb-3">
             <label
-              for="password"
+              htmlFor="password"
               className="text-lg text-black font-medium whitespace-nowrap"
             >
               Password:
@@ -91,7 +91,7 @@ const FormUserDetails = ({ nextStep, handleChange, values }) => {
           </div>
           <div className="flex gap-3 items-center pb-3">
             <label
-              for="confirmPassword"
+              htmlFor="confirmPassword"
               className="text-lg text-black font-medium whitespace-nowrap"
             >
               Confirm Password:
@@ -109,7 +109,7 @@ const FormUserDetails = ({ nextStep, handleChange, values }) => {
           </div>
           <div className="flex gap-3 items-center pb-3">
               <label
-                for="role"
+                htmlFor="role"
                 className="text-lg text-black font-medium whitespace-nowrap"
               >
                 Role:

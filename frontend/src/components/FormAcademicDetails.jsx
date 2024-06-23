@@ -16,7 +16,7 @@ const FormAcademicDetails = ({ nextStep, prevStep, handleChange, values }) => {
       <div className="flex flex-1 w-full items-center justify-center">
         <form onSubmit={handleSubmit}>
           <div className="flex gap-3 items-center pb-3">
-            <label for="register_number" className="text-lg text-black font-medium whitespace-nowrap">Register Number:</label>
+            <label htmlFor="register_number" className="text-lg text-black font-medium whitespace-nowrap">Register Number:</label>
             <input
               type="text"
               className="w-full text-black bg-white/80 rounded-xl p-2 mt-1 focus:outline-none focus:bg-white"
@@ -30,7 +30,7 @@ const FormAcademicDetails = ({ nextStep, prevStep, handleChange, values }) => {
             />
           </div>
           <div className="flex gap-3 items-center pb-3">
-            <label for="programme" className="text-lg text-black font-medium whitespace-nowrap">Programme:</label>
+            <label htmlFor="programme" className="text-lg text-black font-medium whitespace-nowrap">Programme:</label>
             <select
               className="w-full text-black bg-white/80 rounded-xl p-2 mt-1 focus:outline-none focus:bg-white"
               name="programme"
@@ -48,7 +48,7 @@ const FormAcademicDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </select>
           </div>
           <div className="flex gap-3 items-center pb-3">
-            <label for="batch" className="text-lg text-black font-medium whitespace-nowrap">Batch:</label>
+            <label htmlFor="batch" className="text-lg text-black font-medium whitespace-nowrap">Batch:</label>
             <select
               className="w-full text-black bg-white/80 rounded-xl p-2 mt-1 focus:outline-none focus:bg-white"
               name="batch"

@@ -74,7 +74,7 @@ function AdmResultUploading() {
                 accept=".xlsx,.xls"
                 onChange={handleInternalFileChange}
               />
-              <label htmlFor="file" className="pt-5">
+              <label htmlhtmlFor="file" className="pt-5">
                 Choose Excel File to add the Marks
               </label>
             </div>
@@ -96,7 +96,7 @@ function AdmResultUploading() {
                 accept=".xlsx,.xls"
                 onChange={handleExternalFileChange}
               />
-              <label htmlFor="file" className="pt-5">
+              <label htmlhtmlFor="file" className="pt-5">
                 Choose Excel File to add the Marks
               </label>
             </div>

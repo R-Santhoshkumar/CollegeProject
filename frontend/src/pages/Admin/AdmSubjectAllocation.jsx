@@ -59,7 +59,7 @@ function AdmSubjectAllocation() {
                   accept=".xlsx,.xls"
                   onChange={handleRegulationChange}
                 />
-                <label htmlFor="file" className="pt-5">
+                <label htmlhtmlFor="file" className="pt-5">
                   Choose Excel File to add the Allocation details.
                 </label>
               </div>

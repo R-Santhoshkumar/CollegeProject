@@ -42,7 +42,7 @@ function LoginPage() {
       if (response.data.success) {
         let token = response.data.token;
         console.log(token);
-        Cookies.set("token", token, {
+        Cookies.set("sessionId", token, {
           path: "/", // Set path as needed
           sameSite: "strict", // Secure option
           secure: true, // Set for HTTPS
@@ -89,7 +89,7 @@ function LoginPage() {
 
           <form className="w-full h-full" onSubmit={handleSubmit}>
             <div className="flex flex-col pb-3">
-              <label for="email" className="text-lg text-black font-medium">
+              <label htmlFor="email" className="text-lg text-black font-medium">
                 Email-id :
               </label>
               <input
@@ -105,7 +105,7 @@ function LoginPage() {
               />
             </div>
             <div className="flex flex-col pb-3">
-              <label for="password" className="text-lg text-black font-medium">
+              <label htmlFor="password" className="text-lg text-black font-medium">
                 Password :
               </label>
               <input
@@ -121,7 +121,7 @@ function LoginPage() {
             </div>
             <div className="flex flex-col pb-3">
               <label
-                for="role"
+                htmlFor="role"
                 className="text-lg text-black font-medium whitespace-nowrap"
               >
                 Role:

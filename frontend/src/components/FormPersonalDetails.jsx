@@ -17,7 +17,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
         <form onSubmit={handleSubmit}>
           <div className="flex w-full h-auto pb-3 justify-left items-center">
             <div className="flex flex-auto w-full h-auto  justify-center items-center">
-              <label for="name" className="text-[18px]  pr-5 whitespace-nowrap">
+              <label htmlFor="name" className="text-[18px]  pr-5 whitespace-nowrap">
                 1. Name :
               </label>
               <input
@@ -33,7 +33,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
               />
             </div>
             <div className="flex flex-row w-full h-auto ps-5  justify-left items-center">
-              <label for="DOB" className=" text-[18px]  pr-5 whitespace-nowrap">
+              <label htmlFor="DOB" className=" text-[18px]  pr-5 whitespace-nowrap">
                 2. Date of Birth :
               </label>
               <input
@@ -48,7 +48,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </div>
             <div className="flex flex-row w-full h-auto ps-5 justify-center items-center">
               <label
-                for="gender"
+                htmlFor="gender"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 3. Gender :{" "}
@@ -69,7 +69,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
           </div>
           <div className="flex flex-auto w-full h-auto pb-3 justify-center items-center">
             <label
-              for="address"
+              htmlFor="address"
               className="text-[18px]  pr-5 whitespace-nowrap"
             >
               4. Address :
@@ -88,7 +88,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
           <div className="flex w-full h-auto pb-3 justify-left items-center">
             <div className="flex flex-row w-full h-auto  pr-3 justify-center items-center">
               <label
-                for="father_name"
+                htmlFor="father_name"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 5. Father Name :
@@ -107,7 +107,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </div>
             <div className="flex flex-row w-full h-auto  justify-center items-center">
               <label
-                for="mother_name"
+                htmlFor="mother_name"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 6. Mother Name :
@@ -126,7 +126,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </div>
             <div className="flex flex-row w-full h-auto  ps-3 justify-center items-center">
               <label
-                for="gaurdian_name"
+                htmlFor="gaurdian_name"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 7. Gaurdian Name :
@@ -147,7 +147,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
           <div className="flex w-full h-auto pb-3 justify-left items-center">
             <div className="flex flex-row w-full h-auto  pr-3 justify-center items-center">
               <label
-                for="father_occupation"
+                htmlFor="father_occupation"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 8. Father Occupation :
@@ -166,7 +166,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </div>
             <div className="flex flex-row w-full h-auto  pr-3 justify-center items-center">
               <label
-                for="mobile_number"
+                htmlFor="mobile_number"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 9. Mobile Number :
@@ -185,7 +185,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </div>
             <div className="flex flex-row w-full h-auto  pr-3 justify-center items-center">
               <label
-                for="parents_mob_no"
+                htmlFor="parents_mob_no"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 10. Parents Mobile Number :
@@ -206,7 +206,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
           <div className="grid grid-cols-3 w-full h-auto pb-3 justify-left items-center">
             <div className="flex flex-row  col-span-1 w-full h-auto  justify-center items-center">
               <label
-                for="blood_group"
+                htmlFor="blood_group"
                 className="text-[18px]  pr-5  whitespace-nowrap"
               >
                 11. Blood Group:
@@ -233,7 +233,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </div>
             <div className="flex flex-row col-span-2 w-full h-auto  ps-3 justify-center items-center">
               <label
-                for="email"
+                htmlFor="email"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 12. Email-id :
@@ -254,7 +254,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
           <div className="grid grid-cols-3 w-full h-auto pb-3 justify-left items-center">
             <div className="flex flex-row w-full h-auto  pr-3 justify-center items-center">
               <label
-                for="religion"
+                htmlFor="religion"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 13. Religion :
@@ -273,7 +273,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </div>
             <div className="flex flex-row w-full h-auto  pr-3 justify-center items-center">
               <label
-                for="caste"
+                htmlFor="caste"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 14. Caste :
@@ -292,7 +292,7 @@ const FormPersonalDetails = ({ nextStep, prevStep, handleChange, values }) => {
             </div>
             <div className="flex flex-row w-full h-auto  pr-3 justify-center items-center">
               <label
-                for="nationality"
+                htmlFor="nationality"
                 className="text-[18px]  pr-5 whitespace-nowrap"
               >
                 15. Nationality :
