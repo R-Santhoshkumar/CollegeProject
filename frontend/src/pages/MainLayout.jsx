@@ -23,6 +23,7 @@ function MainLayout() {
   //         console.error("No Data");
   //       }
   //     } catch (error) {
+  
   //       console.error("Error fetching user info:", error);
   //     }
   //   }
